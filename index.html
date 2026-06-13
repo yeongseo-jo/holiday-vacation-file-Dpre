@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공휴일 연차 선택</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+    background: #f5f5f4;
+    color: #1c1c1a;
+    min-height: 100vh;
+  }
+
+  .app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 24px;
+  }
+  .header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .header p {
+    font-size: 13px;
+    color: #888780;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid #e4e2db;
+    margin-bottom: 24px;
+    gap: 0;
+  }
+  .tab-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: #888780;
+    transition: all 0.15s;
+    margin-bottom: -1px;
+  }
+  .tab-btn.active {
+    color: #1c1c1a;
+    border-bottom-color: #1c1c1a;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Admin button */
+  .admin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #888780;
+    padding: 6px 12px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #e4e2db;
+    border-radius: 8px;
+    transition: background 0.15s;
+  }
+  .admin-btn:hover { background: #f5f5f4; }
+  .admin-btn svg { width: 14px; height: 14px; }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 20px; }
+  .progress-label {
+    font-size: 12px;
+    color: #888780;
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 4px;
+    background: #e4e2db;
+    border-radius: 2px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #378ADD;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* Order list */
+  .order-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .order-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #e4e2db;
+    background: #fff;
+    transition: all 0.15s;
+  }
+  .order-item.current {
+    background: #EBF4FD;
+    border-color: #378ADD;
+  }
+  .order-item.done {
+    opacity: 0.4;
+  }
+
+  .order-num {
+    font-size: 12px;
+    color: #aaa8a0;
+    min-width: 22px;
+    text-align: right;
+  }
+  .order-name {
+    font-size: 15px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .badge-current { background: #B5D4F4; color: #0C447C; }
+  .badge-done { background: #f0eeea; color: #888780; }
+  .badge-next { background: #EAF3DE; color: #3B6D11; }
+  .badge-wait { background: #f0eeea; color: #888780; }
+
+  .complete-btn {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid #378ADD;
+    background: none;
+    color: #185FA5;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.1s;
+  }
+  .complete-btn:hover { background: #E6F1FB; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 48px 16px;
+    color: #aaa8a0;
+  }
+  .empty-state svg {
+    width: 40px; height: 40px;
+    margin: 0 auto 12px;
+    display: block;
+    opacity: 0.4;
+  }
+  .empty-state p { font-size: 14px; }
+
+  /* Placeholder tab */
+  .placeholder-tab {
+    text-align: center;
+    padding: 64px 16px;
+    color: #aaa8a0;
+  }
+  .placeholder-tab svg {
+    width: 36px; height: 36px;
+    margin: 0 auto 12px;
+    display: block;
+    opacity: 0.35;
+  }
+  .placeholder-tab p { font-size: 14px; }
+
+  /* Modal backdrop */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-backdrop.open { display: flex; }
+
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  .modal h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .form-row {
+    margin-bottom: 14px;
+  }
+  .form-row label {
+    display: block;
+    font-size: 12px;
+    color: #888780;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .form-row input,
+  .form-row select {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 14px;
+    border: 1px solid #e4e2db;
+    border-radius: 8px;
+    background: #fff;
+    color: #1c1c1a;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-row input:focus,
+  .form-row select:focus {
+    border-color: #378ADD;
+    box-shadow: 0 0 0 3px rgba(55,138,221,0.1);
+  }
+
+  .error-msg {
+    font-size: 12px;
+    color: #A32D2D;
+    margin-bottom: 12px;
+    display: none;
+  }
+
+  .name-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .name-row span {
+    font-size: 12px;
+    color: #aaa8a0;
+    min-width: 22px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .name-row input {
+    flex: 1;
+    padding: 7px 10px;
+    font-size: 13px;
+    border: 1px solid #e4e2db;
+    border-radius: 7px;
+    background: #fff;
+    color: #1c1c1a;
+    font-family: inherit;
+    outline: none;
+  }
+  .name-row input:focus { border-color: #378ADD; }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .btn {
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .btn-secondary {
+    background: none;
+    border: 1px solid #e4e2db;
+    color: #888780;
+  }
+  .btn-secondary:hover { background: #f5f5f4; }
+  .btn-primary {
+    background: #1c1c1a;
+    border: none;
+    color: #fff;
+  }
+  .btn-primary:hover { background: #333331; }
+
+  /* Reset button */
+  .reset-btn {
+    font-size: 12px;
+    color: #A32D2D;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    margin-top: 8px;
+    display: none;
+  }
+  .reset-btn:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <h1>공휴일 연차 선택</h1>
+    <p>순서대로 원하는 날짜를 선택하세요</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('order')">선택순서</button>
+    <button class="tab-btn" onclick="switchTab('vacation')">vacation file</button>
+  </div>
+
+  <!-- 선택순서 탭 -->
+  <div id="tab-order" class="tab-content active">
+    <button class="admin-btn" onclick="openModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      순서 관리
+    </button>
+
+    <div id="order-section">
+      <!-- 비어있을 때 -->
+      <div id="empty-state" class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <p>아직 참가자가 등록되지 않았어요.<br>순서 관리 버튼을 눌러 등록해주세요.</p>
+      </div>
+
+      <!-- 진행 중일 때 -->
+      <div id="progress-wrap" class="progress-wrap" style="display:none">
+        <div class="progress-label" id="progress-label"></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+      <div class="order-list" id="order-list"></div>
+      <button class="reset-btn" id="reset-btn" onclick="confirmReset()">처음부터 다시 시작</button>
+    </div>
+  </div>
+
+  <!-- vacation file 탭 -->
+  <div id="tab-vacation" class="tab-content">
+    <div class="placeholder-tab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <p>vacation file — 추후 구성 예정</p>
+    </div>
+  </div>
+</div>
+
+<!-- 모달 -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="handleBackdropClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+
+    <!-- 비밀번호 단계 -->
+    <div id="step-pw">
+      <h3>관리자 확인</h3>
+      <div class="form-row">
+        <label>비밀번호</label>
+        <input type="password" id="pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPw()">
+      </div>
+      <div class="error-msg" id="pw-error">비밀번호가 올바르지 않아요.</div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="closeModal()">취소</button>
+        <button class="btn btn-primary" onclick="checkPw()">확인</button>
+      </div>
+    </div>
+
+    <!-- 설정 단계 -->
+    <div id="step-setup" style="display:none">
+      <h3>참가자 순서 설정</h3>
+      <div class="form-row">
+        <label>인원수</label>
+        <select id="count-select" onchange="renderNameInputs()">
+          <option value="">선택하세요</option>
+        </select>
+      </div>
+      <div class="name-inputs" id="name-inputs"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="closeModal()">취소</button>
+        <button class="btn btn-primary" onclick="saveOrder()">저장</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const PW = '0911';
+  let participants = [];
+  let currentIndex = 0;
+
+  // 탭 전환
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', (i === 0 && tab === 'order') || (i === 1 && tab === 'vacation'));
+    });
+    document.getElementById('tab-order').classList.toggle('active', tab === 'order');
+    document.getElementById('tab-vacation').classList.toggle('active', tab === 'vacation');
+  }
+
+  // 모달 열기
+  function openModal() {
+    document.getElementById('modal-backdrop').classList.add('open');
+    document.getElementById('step-pw').style.display = 'block';
+    document.getElementById('step-setup').style.display = 'none';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-error').style.display = 'none';
+    setTimeout(() => document.getElementById('pw-input').focus(), 50);
+  }
+
+  function closeModal() {
+    document.getElementById('modal-backdrop').classList.remove('open');
+  }
+
+  function handleBackdropClick(e) {
+    if (e.target === document.getElementById('modal-backdrop')) closeModal();
+  }
+
+  // 비밀번호 확인
+  function checkPw() {
+    const val = document.getElementById('pw-input').value;
+    if (val === PW) {
+      document.getElementById('step-pw').style.display = 'none';
+      document.getElementById('step-setup').style.display = 'block';
+      const sel = document.getElementById('count-select');
+      sel.innerHTML = '<option value="">선택하세요</option>';
+      for (let i = 2; i <= 40; i++) sel.innerHTML += `<option value="${i}">${i}명</option>`;
+      if (participants.length > 0) {
+        sel.value = participants.length;
+        renderNameInputs(participants);
+      } else {
+        renderNameInputs();
+      }
+    } else {
+      document.getElementById('pw-error').style.display = 'block';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+
+  // 이름 입력칸 렌더링
+  function renderNameInputs(existing) {
+    const count = parseInt(document.getElementById('count-select').value) || 0;
+    const container = document.getElementById('name-inputs');
+    container.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const row = document.createElement('div');
+      row.className = 'name-row';
+      const val = existing && existing[i] ? existing[i] : '';
+      row.innerHTML = `<span>${i + 1}</span><input type="text" placeholder="${i + 1}번째 선택자" value="${val}">`;
+      container.appendChild(row);
+    }
+  }
+
+  // 저장
+  function saveOrder() {
+    const inputs = document.querySelectorAll('#name-inputs input');
+    const names = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
+    if (names.length < 2) {
+      alert('최소 2명 이상 이름을 입력해주세요.');
+      return;
+    }
+    participants = names;
+    currentIndex = 0;
+    renderOrder();
+    closeModal();
+  }
+
+  // 순서 렌더링
+  function renderOrder() {
+    const list = document.getElementById('order-list');
+    const empty = document.getElementById('empty-state');
+    const progressWrap = document.getElementById('progress-wrap');
+    const fill = document.getElementById('progress-fill');
+    const label = document.getElementById('progress-label');
+    const resetBtn = document.getElementById('reset-btn');
+
+    if (participants.length === 0) {
+      list.innerHTML = '';
+      empty.style.display = 'block';
+      progressWrap.style.display = 'none';
+      resetBtn.style.display = 'none';
+      return;
+    }
+
+    empty.style.display = 'none';
+    progressWrap.style.display = 'block';
+    resetBtn.style.display = 'block';
+
+    const pct = Math.round((currentIndex / participants.length) * 100);
+    fill.style.width = pct + '%';
+
+    if (currentIndex >= participants.length) {
+      label.textContent = `완료 — 전원(${participants.length}명) 선택 완료`;
+    } else {
+      label.textContent = `진행률 ${pct}% — ${currentIndex}명 완료, ${participants.length - currentIndex}명 남음`;
+    }
+
+    list.innerHTML = '';
+    participants.forEach((name, i) => {
+      const item = document.createElement('div');
+      item.className = 'order-item' + (i === currentIndex ? ' current' : i < currentIndex ? ' done' : '');
+
+      let badge = '';
+      if (i === currentIndex) {
+        badge = '<span class="badge badge-current">선택 중</span>';
+      } else if (i < currentIndex) {
+        badge = '<span class="badge badge-done">완료</span>';
+      } else if (i === currentIndex + 1) {
+        badge = '<span class="badge badge-next">다음</span>';
+      } else {
+        badge = `<span class="badge badge-wait">${i - currentIndex}번 후</span>`;
+      }
+
+      item.innerHTML = `
+        <span class="order-num">${i + 1}</span>
+        <span class="order-name">${name}</span>
+        ${badge}
+      `;
+
+      if (i === currentIndex && currentIndex < participants.length) {
+        const btn = document.createElement('button');
+        btn.className = 'complete-btn';
+        btn.textContent = '선택 완료 →';
+        btn.onclick = () => {
+          currentIndex++;
+          renderOrder();
+        };
+        item.appendChild(btn);
+      }
+
+      list.appendChild(item);
+    });
+  }
+
+  // 초기화
+  function confirmReset() {
+    if (confirm('처음부터 다시 시작할까요? 현재 진행 상황이 초기화돼요.')) {
+      currentIndex = 0;
+      renderOrder();
+    }
+  }
+
+  // 초기 렌더링
+  renderOrder();
+</script>
+</body>
+</html>
