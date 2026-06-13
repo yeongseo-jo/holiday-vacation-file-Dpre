@@ -107,9 +107,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .cal-names { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 100%; margin-top: 3px; }
 .cal-name-tag { font-size: 9px; color: #1a7a3a; font-weight: 600; background: #d4edda; border-radius: 3px; padding: 1px 3px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4; width: 100%; text-align: center; }
 .cal-name-tag.pending-tag { color: #856404; background: #fff3cd; }
-.cal-slots { font-size: 9px; color: #ff3b30; font-weight: 600; margin-top: 3px; }
-.cal-slots.ok { color: #34c759; }
-.cal-slots.warn { color: #ff9500; }
+.cal-slots { font-size: 8px; color: #ff3b30; font-weight: 600; margin-top: 3px; text-align: center; width: 100%; white-space: nowrap; }
 
 .cal-info-bar { background: #fff9c4; border-top: 0.5px solid #ffd60a; padding: 10px 16px; font-size: 13px; color: #5a4a00; }
 .cal-info-bar strong { color: #1c1c1e; }
@@ -533,8 +531,7 @@ function renderCalendar() {
     if (isHoliday && !isPast) {
       const remain = MAX_PER_DATE - slotCount;
       if (!isFull) {
-        const cls2 = remain === MAX_PER_DATE ? 'ok' : remain === 1 ? 'warn' : '';
-        inner += `<div class="cal-slots ${cls2}">${remain}자리</div>`;
+        inner += `<div class="cal-slots">남은 자리 ${remain}</div>`;
       } else {
         inner += `<div class="cal-slots" style="color:#aeaeb2">마감</div>`;
       }
