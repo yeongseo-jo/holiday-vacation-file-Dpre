@@ -8,7 +8,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif; background: #f2f2f7; color: #1c1c1e; min-height: 100vh; }
 
-/* 이름 입력 화면 */
+/* 이름 게이트 */
 .name-gate { position: fixed; inset: 0; background: #f2f2f7; z-index: 300; display: flex; align-items: center; justify-content: center; padding: 24px; }
 .name-gate-box { background: #fff; border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 340px; text-align: center; }
 .name-gate-box h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
@@ -16,21 +16,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .name-gate-input { width: 100%; padding: 13px 16px; font-size: 16px; border: 1.5px solid #e5e5ea; border-radius: 12px; font-family: inherit; outline: none; text-align: center; color: #1c1c1e; transition: border-color 0.15s; }
 .name-gate-input:focus { border-color: #007aff; }
 .name-gate-error { font-size: 13px; color: #ff3b30; margin-top: 8px; min-height: 18px; }
-.name-gate-btn { margin-top: 16px; width: 100%; padding: 14px; font-size: 16px; font-weight: 600; background: #007aff; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
+.name-gate-btn { margin-top: 16px; width: 100%; padding: 14px; font-size: 16px; font-weight: 600; background: #007aff; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-family: inherit; }
 .name-gate-btn:hover { opacity: 0.85; }
 
 .app { max-width: 640px; margin: 0 auto; padding: 0 0 48px; }
 
-/* 현재 사용자 표시 */
 .user-bar { background: #fff; border-bottom: 0.5px solid #c6c6c8; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
 .user-bar-name { font-size: 13px; color: #8e8e93; }
 .user-bar-name strong { color: #1c1c1e; font-weight: 600; }
-.my-turn-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: #fff3cd; color: #856404; }
+.my-turn-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: #fff3cd; color: #856404; display: none; }
 .live-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #34c759; }
 .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #34c759; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
 
-/* 탭 */
 .tabs { display: flex; background: #fff; border-bottom: 0.5px solid #c6c6c8; }
 .tab-btn { flex: 1; padding: 12px; font-size: 14px; font-weight: 500; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; color: #8e8e93; transition: all 0.15s; margin-bottom: -1px; font-family: inherit; }
 .tab-btn.active { color: #007aff; border-bottom-color: #007aff; }
@@ -39,70 +37,84 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 
 /* 선택순서 탭 */
 .order-tab { padding: 16px; }
-.admin-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #8e8e93; padding: 6px 12px; margin-bottom: 16px; cursor: pointer; background: #fff; border: 1px solid #e5e5ea; border-radius: 8px; font-family: inherit; }
+.btn-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.admin-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #8e8e93; padding: 7px 13px; cursor: pointer; background: #fff; border: 1px solid #e5e5ea; border-radius: 8px; font-family: inherit; transition: background 0.1s; }
+.admin-btn:hover { background: #f2f2f7; }
+.newbie-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #34c759; padding: 7px 13px; cursor: pointer; background: #fff; border: 1px solid #34c759; border-radius: 8px; font-family: inherit; transition: background 0.1s; }
+.newbie-btn:hover { background: #f0fff4; }
+.reset-btn { display: none; font-size: 13px; color: #ff3b30; padding: 7px 13px; cursor: pointer; background: #fff; border: 1px solid #ff3b30; border-radius: 8px; font-family: inherit; margin-left: auto; }
+.reset-btn:hover { background: #fff5f5; }
+
 .progress-wrap { margin-bottom: 16px; }
 .progress-label { font-size: 12px; color: #8e8e93; margin-bottom: 6px; }
 .progress-bar { height: 4px; background: #e5e5ea; border-radius: 2px; }
 .progress-fill { height: 100%; background: #007aff; border-radius: 2px; transition: width 0.4s ease; }
 .order-list { display: flex; flex-direction: column; gap: 8px; }
-.order-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; border: 1px solid #e5e5ea; background: #fff; transition: all 0.3s ease; }
+.order-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; border: 1px solid #e5e5ea; background: #fff; transition: all 0.35s ease; }
 .order-item.current { background: #e8f4ff; border-color: #007aff; }
-.order-item.done { opacity: 0.45; }
+.order-item.confirmed-row { opacity: 0.5; }
 .order-num { font-size: 12px; color: #aeaeb2; min-width: 20px; text-align: right; flex-shrink: 0; }
 .order-name { font-size: 15px; font-weight: 500; flex: 1; }
-.order-date { font-size: 12px; color: #007aff; font-weight: 500; margin-right: 4px; }
-.order-confirmed-date { font-size: 12px; color: #34c759; font-weight: 600; margin-right: 4px; }
-.badge { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+.order-dates { font-size: 11px; color: #007aff; font-weight: 500; margin-right: 4px; display: flex; flex-wrap: wrap; gap: 3px; }
+.order-dates span { background: #e8f4ff; padding: 1px 6px; border-radius: 6px; }
+.order-dates span.pending { background: #fff9c4; color: #856404; }
+.badge { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
 .badge-current { background: #cce5ff; color: #004085; }
-.badge-done { background: #f2f2f7; color: #8e8e93; }
 .badge-next { background: #d4edda; color: #155724; }
 .badge-wait { background: #f2f2f7; color: #8e8e93; }
 .badge-confirmed { background: #d4edda; color: #155724; }
-.complete-btn { font-size: 12px; padding: 5px 11px; border-radius: 8px; border: 1px solid #007aff; background: none; color: #007aff; cursor: pointer; white-space: nowrap; font-family: inherit; transition: background 0.1s; }
+.complete-btn { font-size: 12px; padding: 5px 11px; border-radius: 8px; border: 1px solid #007aff; background: none; color: #007aff; cursor: pointer; white-space: nowrap; font-family: inherit; flex-shrink: 0; }
 .complete-btn:hover { background: #e8f4ff; }
-.complete-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.complete-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.section-divider { font-size: 11px; color: #aeaeb2; padding: 10px 4px 4px; }
 .empty-state { text-align: center; padding: 48px 16px; color: #aeaeb2; }
 .empty-state p { font-size: 14px; }
-.reset-btn { font-size: 12px; color: #ff3b30; background: none; border: none; cursor: pointer; padding: 4px 0; margin-top: 8px; font-family: inherit; display: none; }
 
 /* 달력 탭 */
-.cal-tab { background: #fff; min-height: 100vh; }
-.cal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px; }
-.cal-nav-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: #f2f2f7; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: #007aff; transition: background 0.1s; }
+.cal-tab { background: #fff; padding-bottom: 24px; }
+.cal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 8px; }
+.cal-nav-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: #f2f2f7; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: #007aff; }
 .cal-nav-btn:hover { background: #e5e5ea; }
 .cal-month-title { font-size: 18px; font-weight: 700; color: #1c1c1e; }
-.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); padding: 0 8px; margin-bottom: 4px; }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); padding: 0 8px; margin-bottom: 2px; }
 .cal-weekday { text-align: center; font-size: 12px; font-weight: 500; color: #8e8e93; padding: 6px 0; }
 .cal-weekday:first-child { color: #ff3b30; }
 .cal-weekday:last-child { color: #007aff; }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); padding: 0 8px 16px; gap: 2px; }
-.cal-cell { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; cursor: default; position: relative; padding: 2px; }
-.cal-cell.selectable { cursor: pointer; transition: background 0.1s; }
-.cal-cell.selectable:hover { background: #f2f2f7; }
-.cal-cell.holiday .cal-num { color: #ff3b30 !important; }
-.cal-cell.holiday .cal-inner { border: 2px solid #ff3b30; border-radius: 8px; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.cal-cell.selected .cal-inner { background: #ffd60a; border-color: #ffd60a !important; border-radius: 8px; }
-.cal-cell.confirmed .cal-inner { background: #e8f4ff; border: 2px solid #007aff; border-radius: 8px; }
-.cal-cell.today .cal-num { font-weight: 700; }
-.cal-cell.today:not(.holiday) .cal-inner { background: #007aff; border-radius: 8px; }
-.cal-cell.today:not(.holiday) .cal-num { color: #fff !important; }
-.cal-inner { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.cal-num { font-size: 15px; font-weight: 400; color: #1c1c1e; line-height: 1; }
-.cal-cell.other-month .cal-num { color: #c7c7cc; }
-.cal-cell:nth-child(7n+1) .cal-num { color: #ff3b30; }
-.cal-cell:nth-child(7n) .cal-num { color: #007aff; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); padding: 0 8px 8px; gap: 3px; }
+.cal-cell { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; border-radius: 10px; position: relative; overflow: hidden; padding: 3px 2px 2px; }
+.cal-cell.selectable { cursor: pointer; }
+.cal-cell.selectable:active { opacity: 0.7; }
+.cal-num { font-size: 14px; font-weight: 400; color: #1c1c1e; text-align: center; width: 100%; line-height: 1.3; }
 .cal-cell.other-month .cal-num { color: #c7c7cc !important; }
-.cal-cell.holiday .cal-num { color: #ff3b30 !important; }
-.cal-cell.today:not(.holiday) .cal-num { color: #fff !important; }
-.cal-cell.confirmed .cal-inner { position: relative; }
-.confirmed-name { font-size: 8px; color: #007aff; font-weight: 600; margin-top: 1px; line-height: 1; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
-.holiday-name { font-size: 7px; color: #ff3b30; margin-top: 1px; line-height: 1; max-width: 34px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; display: none; }
-.cal-selection-bar { background: #f2f2f7; border-top: 0.5px solid #c6c6c8; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
-.cal-selection-info { font-size: 13px; color: #8e8e93; }
-.cal-selection-info strong { color: #1c1c1e; }
-.not-your-turn { text-align: center; padding: 16px; font-size: 13px; color: #8e8e93; background: #fff9e6; border-top: 0.5px solid #f0e0a0; }
+.cal-cell.past { background: #f2f2f7; }
+.cal-cell.past .cal-num { color: #c7c7cc !important; }
+/* 요일별 색상 */
+.cal-cell:nth-child(7n+1):not(.other-month):not(.past) .cal-num { color: #ff3b30; }
+.cal-cell:nth-child(7n):not(.other-month):not(.past) .cal-num { color: #007aff; }
+/* 공휴일 */
+.cal-cell.holiday:not(.past) .cal-num { color: #ff3b30 !important; }
+.cal-cell.holiday:not(.past):not(.full) { border: 2px solid #ff3b30; }
+/* 오늘 */
+.cal-cell.today .today-dot { width: 5px; height: 5px; border-radius: 50%; background: #007aff; margin: 1px auto 0; }
+/* 선택됨 (내 펜딩) */
+.cal-cell.my-pending { background: #ffd60a !important; border-color: #ffd60a !important; }
+.cal-cell.my-pending .cal-num { color: #1c1c1e !important; }
+/* 확정됨 */
+.cal-cell.has-confirmed { background: #e8f4ff; border: 2px solid #007aff !important; }
+.cal-cell.full { background: #f0f0f0; border: 2px solid #c7c7cc !important; }
+.cal-cell.full .cal-num { color: #aeaeb2 !important; }
+.cal-names { display: flex; flex-direction: column; align-items: center; gap: 1px; width: 100%; margin-top: 1px; }
+.cal-name-tag { font-size: 7px; color: #007aff; font-weight: 600; background: #d0e8ff; border-radius: 3px; padding: 0 2px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.4; }
+.cal-name-tag.pending-tag { color: #856404; background: #fff3cd; }
+.cal-slots { font-size: 8px; color: #ff3b30; font-weight: 600; margin-top: 1px; }
+.cal-slots.ok { color: #34c759; }
+.cal-slots.warn { color: #ff9500; }
 
-/* 모달 */
+.cal-info-bar { background: #f2f2f7; border-top: 0.5px solid #c6c6c8; padding: 10px 16px; font-size: 13px; color: #8e8e93; }
+.cal-info-bar strong { color: #1c1c1e; }
+.not-your-turn { text-align: center; padding: 12px 16px; font-size: 13px; color: #8e8e93; background: #fffbe6; border-top: 0.5px solid #ffe58f; }
+
+/* 모달 공통 */
 .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
 .modal-backdrop.open { display: flex; }
 .modal { background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 360px; max-height: 85vh; overflow-y: auto; }
@@ -117,18 +129,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .name-row span { font-size: 12px; color: #aeaeb2; min-width: 22px; text-align: right; flex-shrink: 0; }
 .name-row input { flex: 1; padding: 7px 10px; font-size: 13px; border: 1px solid #e5e5ea; border-radius: 7px; background: #fff; color: #1c1c1e; font-family: inherit; outline: none; }
 .btn-row { display: flex; gap: 8px; justify-content: flex-end; }
-.btn { padding: 9px 18px; font-size: 14px; font-weight: 500; border-radius: 8px; cursor: pointer; font-family: inherit; }
-.btn-secondary { background: none; border: 1px solid #e5e5ea; color: #8e8e93; }
-.btn-primary { background: #007aff; border: none; color: #fff; }
+.btn { padding: 9px 18px; font-size: 14px; font-weight: 500; border-radius: 8px; cursor: pointer; font-family: inherit; border: none; }
+.btn-secondary { background: #f2f2f7; color: #8e8e93; }
+.btn-primary { background: #007aff; color: #fff; }
+.btn-green { background: #34c759; color: #fff; }
 </style>
 </head>
 <body>
 
-<!-- 이름 입력 게이트 -->
+<!-- 이름 게이트 -->
 <div class="name-gate" id="name-gate">
   <div class="name-gate-box">
     <h2>안녕하세요!</h2>
-    <p>공휴일 연차 선택 시스템입니다.<br>등록된 이름을 입력해주세요.</p>
+    <p>공휴일 연차 선택 시스템입니다.<br>등록된 이름을 정확히 입력해주세요.</p>
     <input class="name-gate-input" type="text" id="gate-input" placeholder="이름 입력" maxlength="10">
     <div class="name-gate-error" id="gate-error"></div>
     <button class="name-gate-btn" onclick="submitName()">입장하기</button>
@@ -136,12 +149,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 </div>
 
 <div class="app" id="main-app" style="display:none">
-  <!-- 사용자 바 -->
   <div class="user-bar">
     <div class="user-bar-name"><strong id="display-name"></strong>님</div>
     <div style="display:flex;align-items:center;gap:8px">
       <span class="live-badge"><span class="live-dot"></span>실시간</span>
-      <span class="my-turn-badge" id="my-turn-badge" style="display:none">내 차례!</span>
+      <span class="my-turn-badge" id="my-turn-badge">내 차례!</span>
     </div>
   </div>
 
@@ -153,10 +165,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
   <!-- 선택순서 탭 -->
   <div id="tab-order" class="tab-content active">
     <div class="order-tab">
-      <button class="admin-btn" onclick="openModal()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        순서 관리
-      </button>
+      <div class="btn-bar">
+        <button class="admin-btn" onclick="openAdminModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          순서 관리
+        </button>
+        <button class="newbie-btn" onclick="openNewbieModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          신입 추가
+        </button>
+        <button class="reset-btn" id="reset-btn" onclick="openResetModal()">처음부터 다시 시작</button>
+      </div>
       <div id="loading-state" style="text-align:center;padding:40px;color:#aeaeb2;font-size:14px">불러오는 중...</div>
       <div id="empty-state" class="empty-state" style="display:none"><p>아직 참가자가 등록되지 않았어요.<br>순서 관리 버튼을 눌러 등록해주세요.</p></div>
       <div id="progress-wrap" class="progress-wrap" style="display:none">
@@ -164,7 +183,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
       <div class="order-list" id="order-list"></div>
-      <button class="reset-btn" id="reset-btn" onclick="confirmReset()">처음부터 다시 시작</button>
     </div>
   </div>
 
@@ -177,60 +195,76 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
         <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
       </div>
       <div class="cal-weekdays">
-        <div class="cal-weekday">일</div>
-        <div class="cal-weekday">월</div>
-        <div class="cal-weekday">화</div>
-        <div class="cal-weekday">수</div>
-        <div class="cal-weekday">목</div>
-        <div class="cal-weekday">금</div>
+        <div class="cal-weekday">일</div><div class="cal-weekday">월</div>
+        <div class="cal-weekday">화</div><div class="cal-weekday">수</div>
+        <div class="cal-weekday">목</div><div class="cal-weekday">금</div>
         <div class="cal-weekday">토</div>
       </div>
       <div class="cal-grid" id="cal-grid"></div>
-      <div class="cal-selection-bar" id="cal-selection-bar" style="display:none">
-        <div class="cal-selection-info" id="cal-selection-info"></div>
-      </div>
-      <div class="not-your-turn" id="not-your-turn" style="display:none">
-        현재 선택 차례가 아니에요. 내 차례가 되면 날짜를 선택할 수 있어요.
-      </div>
+      <div id="cal-info-bar" class="cal-info-bar" style="display:none"></div>
+      <div id="not-your-turn" class="not-your-turn" style="display:none">현재 선택 차례가 아니에요. 내 차례가 되면 날짜를 선택할 수 있어요.</div>
     </div>
   </div>
 </div>
 
-<!-- 관리자 모달 -->
-<div class="modal-backdrop" id="modal-backdrop" onclick="handleBackdropClick(event)">
+<!-- 순서관리 모달 -->
+<div class="modal-backdrop" id="admin-modal" onclick="if(event.target===this)closeModal('admin-modal')">
   <div class="modal" onclick="event.stopPropagation()">
-    <div id="step-pw">
+    <div id="admin-pw-step">
       <h3>관리자 확인</h3>
-      <div class="form-row">
-        <label>비밀번호</label>
-        <input type="password" id="pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPw()">
-      </div>
-      <div class="error-msg" id="pw-error">비밀번호가 올바르지 않아요.</div>
-      <div class="btn-row">
-        <button class="btn btn-secondary" onclick="closeModal()">취소</button>
-        <button class="btn btn-primary" onclick="checkPw()">확인</button>
-      </div>
+      <div class="form-row"><label>비밀번호</label><input type="password" id="admin-pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkAdminPw()"></div>
+      <div class="error-msg" id="admin-pw-error">비밀번호가 올바르지 않아요.</div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="closeModal('admin-modal')">취소</button><button class="btn btn-primary" onclick="checkAdminPw()">확인</button></div>
     </div>
-    <div id="step-setup" style="display:none">
+    <div id="admin-setup-step" style="display:none">
       <h3>참가자 순서 설정</h3>
-      <div class="form-row">
-        <label>인원수</label>
-        <select id="count-select" onchange="renderNameInputs()">
+      <div class="form-row"><label>인원수</label>
+        <select id="admin-count-select" onchange="renderAdminNameInputs()">
           <option value="">선택하세요</option>
         </select>
       </div>
-      <div class="name-inputs" id="name-inputs"></div>
-      <div class="btn-row">
-        <button class="btn btn-secondary" onclick="closeModal()">취소</button>
-        <button class="btn btn-primary" onclick="saveOrder()">저장</button>
-      </div>
+      <div class="name-inputs" id="admin-name-inputs"></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="closeModal('admin-modal')">취소</button><button class="btn btn-primary" onclick="saveAdminOrder()">저장</button></div>
     </div>
+  </div>
+</div>
+
+<!-- 신입 추가 모달 -->
+<div class="modal-backdrop" id="newbie-modal" onclick="if(event.target===this)closeModal('newbie-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div id="newbie-pw-step">
+      <h3>신입 추가 — 관리자 확인</h3>
+      <div class="form-row"><label>비밀번호</label><input type="password" id="newbie-pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkNewbiePw()"></div>
+      <div class="error-msg" id="newbie-pw-error">비밀번호가 올바르지 않아요.</div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="closeModal('newbie-modal')">취소</button><button class="btn btn-primary" onclick="checkNewbiePw()">확인</button></div>
+    </div>
+    <div id="newbie-setup-step" style="display:none">
+      <h3>신입 추가</h3>
+      <div class="form-row"><label>추가 인원수</label>
+        <select id="newbie-count-select" onchange="renderNewbieNameInputs()">
+          <option value="">선택하세요</option>
+        </select>
+      </div>
+      <div class="name-inputs" id="newbie-name-inputs"></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="closeModal('newbie-modal')">취소</button><button class="btn btn-green" onclick="saveNewbies()">추가</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 다시 시작 모달 -->
+<div class="modal-backdrop" id="reset-modal" onclick="if(event.target===this)closeModal('reset-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>처음부터 다시 시작</h3>
+    <p style="font-size:13px;color:#8e8e93;margin-bottom:16px;line-height:1.6">모든 선택 기록이 초기화돼요.<br>계속하려면 초기화 비밀번호를 입력해주세요.</p>
+    <div class="form-row"><label>초기화 비밀번호</label><input type="password" id="reset-pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkResetPw()"></div>
+    <div class="error-msg" id="reset-pw-error">비밀번호가 올바르지 않아요.</div>
+    <div class="btn-row"><button class="btn btn-secondary" onclick="closeModal('reset-modal')">취소</button><button class="btn" style="background:#ff3b30;color:#fff" onclick="checkResetPw()">초기화</button></div>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBwtlo2qXpf2rtQGznH_An2_1ByGDv3mV0",
@@ -246,199 +280,181 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const stateRef = ref(db, 'leaveOrder');
 
-// 2026 한국 법정공휴일
+// 2026 법정공휴일
 const HOLIDAYS = {
-  '2026-01-01': '신정',
-  '2026-01-28': '설날 연휴',
-  '2026-01-29': '설날',
-  '2026-01-30': '설날 연휴',
-  '2026-03-01': '삼일절',
-  '2026-05-05': '어린이날',
-  '2026-05-25': '부처님오신날',
-  '2026-06-06': '현충일',
-  '2026-08-15': '광복절',
-  '2026-09-24': '추석 연휴',
-  '2026-09-25': '추석',
-  '2026-09-26': '추석 연휴',
-  '2026-10-03': '개천절',
-  '2026-10-09': '한글날',
-  '2026-12-25': '크리스마스'
+  '2026-01-01':'신정','2026-01-28':'설날연휴','2026-01-29':'설날','2026-01-30':'설날연휴',
+  '2026-03-01':'삼일절','2026-05-05':'어린이날','2026-05-25':'부처님오신날','2026-06-06':'현충일',
+  '2026-08-15':'광복절','2026-09-24':'추석연휴','2026-09-25':'추석','2026-09-26':'추석연휴',
+  '2026-10-03':'개천절','2026-10-09':'한글날','2026-12-25':'크리스마스'
+};
+const MAX_PER_DATE = 3;
+const PW_ADMIN = '0911';
+const PW_RESET = '9999';
+
+let myName = '';
+const today = new Date();
+let calYear = 2026;
+let calMonth = today.getMonth(); // 오늘 기준 월로 시작
+
+let appState = {
+  participants: [],
+  currentIndex: 0,
+  // confirmedDates: { name: [dateStr, dateStr, ...] }  — 이번 라운드 확정
+  confirmedDates: {},
+  // pendingDate: { name: dateStr }  — 현재 선택 중인 날짜 (미확정)
+  pendingDate: {},
+  // dateSlots: { dateStr: [name, name, ...] }  — 날짜별 확정 인원
+  dateSlots: {}
 };
 
-const PW = '0911';
-let myName = '';
-let calYear = 2026;
-let calMonth = 0; // 0-indexed
-let appState = { participants: [], currentIndex: 0, selectedDates: {}, confirmedDates: {}, pendingDate: {} };
-
-// Firebase 실시간 수신
-onValue(stateRef, (snapshot) => {
+onValue(stateRef, (snap) => {
   document.getElementById('loading-state').style.display = 'none';
-  const data = snapshot.val();
-  if (data) {
+  const d = snap.val();
+  if (d) {
     appState = {
-      participants: data.participants || [],
-      currentIndex: data.currentIndex || 0,
-      selectedDates: data.selectedDates || {},
-      confirmedDates: data.confirmedDates || {},
-      pendingDate: data.pendingDate || {}
+      participants: d.participants || [],
+      currentIndex: d.currentIndex || 0,
+      confirmedDates: d.confirmedDates || {},
+      pendingDate: d.pendingDate || {},
+      dateSlots: d.dateSlots || {}
     };
   } else {
-    appState = { participants: [], currentIndex: 0, selectedDates: {}, confirmedDates: {}, pendingDate: {} };
+    appState = { participants:[], currentIndex:0, confirmedDates:{}, pendingDate:{}, dateSlots:{} };
   }
-  renderOrder();
-  renderCalendar();
-  updateMyTurnBadge();
+  if (myName) { renderOrder(); renderCalendar(); updateTurnBadge(); }
 });
 
-function saveState() {
-  set(stateRef, appState);
-}
+function save() { set(stateRef, appState); }
 
-// 이름 게이트
+// ── 이름 게이트 ──
 window.submitName = function() {
   const val = document.getElementById('gate-input').value.trim();
-  if (!val) { document.getElementById('gate-error').textContent = '이름을 입력해주세요.'; return; }
-  if (appState.participants.length === 0) { document.getElementById('gate-error').textContent = '아직 참가자 목록이 등록되지 않았어요. 잠시 후 다시 시도해주세요.'; return; }
-  if (!appState.participants.includes(val)) { document.getElementById('gate-error').textContent = '이름을 정확히 입력해주세요.'; return; }
+  const err = document.getElementById('gate-error');
+  if (!val) { err.textContent = '이름을 입력해주세요.'; return; }
+  if (!appState.participants.length) { err.textContent = '아직 참가자 목록이 없어요. 잠시 후 다시 시도해주세요.'; return; }
+  if (!appState.participants.includes(val)) { err.textContent = '이름을 정확히 입력해주세요.'; return; }
   myName = val;
   document.getElementById('name-gate').style.display = 'none';
   document.getElementById('main-app').style.display = 'block';
   document.getElementById('display-name').textContent = myName;
-  renderOrder();
-  renderCalendar();
-  updateMyTurnBadge();
+  renderOrder(); renderCalendar(); updateTurnBadge();
 };
+document.getElementById('gate-input').addEventListener('keydown', e => { if(e.key==='Enter') window.submitName(); });
 
-document.getElementById('gate-input').addEventListener('keydown', e => { if (e.key === 'Enter') window.submitName(); });
-
-function updateMyTurnBadge() {
-  if (!myName) return;
-  const current = getCurrentTurnName();
-  document.getElementById('my-turn-badge').style.display = current === myName ? 'inline-block' : 'none';
-}
-
+// ── 유틸 ──
 function getCurrentTurnName() {
   const { participants, currentIndex } = appState;
   if (!participants.length) return null;
-  const idx = currentIndex % participants.length;
-  return participants[idx];
+  return participants[currentIndex % participants.length];
+}
+function isMyTurn() { return myName && getCurrentTurnName() === myName; }
+
+function updateTurnBadge() {
+  document.getElementById('my-turn-badge').style.display = isMyTurn() ? 'inline-block' : 'none';
 }
 
-function isMyTurn() {
-  return myName && getCurrentTurnName() === myName;
-}
-
-// 탭 전환
 window.switchTab = function(tab) {
-  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', (i===0&&tab==='order')||(i===1&&tab==='vacation')));
-  document.getElementById('tab-order').classList.toggle('active', tab === 'order');
-  document.getElementById('tab-vacation').classList.toggle('active', tab === 'vacation');
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='order')||(i===1&&tab==='vacation')));
+  document.getElementById('tab-order').classList.toggle('active', tab==='order');
+  document.getElementById('tab-vacation').classList.toggle('active', tab==='vacation');
 };
 
-// 선택순서 렌더링
+// ── 선택순서 렌더링 ──
 function renderOrder() {
-  const { participants, currentIndex, confirmedDates, pendingDate } = appState;
+  const { participants, currentIndex, confirmedDates, pendingDate, dateSlots } = appState;
   const list = document.getElementById('order-list');
   const empty = document.getElementById('empty-state');
   const progressWrap = document.getElementById('progress-wrap');
   const resetBtn = document.getElementById('reset-btn');
 
   if (!participants.length) {
-    list.innerHTML = '';
-    empty.style.display = 'block';
-    progressWrap.style.display = 'none';
-    resetBtn.style.display = 'none';
-    return;
+    list.innerHTML=''; empty.style.display='block'; progressWrap.style.display='none'; resetBtn.style.display='none'; return;
   }
+  empty.style.display='none'; progressWrap.style.display='block'; resetBtn.style.display='block';
 
-  empty.style.display = 'none';
-  progressWrap.style.display = 'block';
-  resetBtn.style.display = 'block';
-
-  const totalRounds = Math.floor(currentIndex / participants.length);
   const posInRound = currentIndex % participants.length;
-  const pct = Math.round((posInRound / participants.length) * 100);
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent =
-    `${posInRound}번째 선택 중 (전체 ${currentIndex}회 완료)`;
-
-  // 현재 라운드 순서: 현재 인덱스(posInRound) 기준으로 정렬
-  // 확정된 사람은 맨 아래, 나머지는 순서대로
-  const confirmedNames = Object.keys(confirmedDates);
-
-  // 현재 라운드에서 아직 선택 안 한 사람들 (현재 포함)
-  let activeList = [];
-  for (let i = 0; i < participants.length; i++) {
-    const realIdx = (posInRound + i) % participants.length;
-    activeList.push({ name: participants[realIdx], isCurrentTurn: i === 0, queuePos: i });
-  }
+  const roundNum = Math.floor(currentIndex / participants.length) + 1;
+  document.getElementById('progress-fill').style.width = (posInRound / participants.length * 100) + '%';
+  document.getElementById('progress-label').textContent = `라운드 ${roundNum} — ${posInRound}/${participants.length}명 완료`;
 
   list.innerHTML = '';
 
-  activeList.forEach(({ name, isCurrentTurn, queuePos }) => {
+  // 현재 차례부터 순서대로 나열 (아직 이번 라운드 미완료)
+  const confirmedThisRound = Object.keys(confirmedDates);
+  let activeQueue = [];
+  for (let i = 0; i < participants.length; i++) {
+    const idx = (posInRound + i) % participants.length;
+    activeQueue.push({ name: participants[idx], qPos: i });
+  }
+
+  activeQueue.forEach(({ name, qPos }) => {
+    const isCurrent = qPos === 0;
     const item = document.createElement('div');
-    item.className = 'order-item' + (isCurrentTurn ? ' current' : '');
+    item.className = 'order-item' + (isCurrent ? ' current' : '');
 
-    const myConfirmedDate = confirmedDates[name];
-    const myPendingDate = pendingDate[name];
+    // 이 사람이 지금까지 확정한 날짜들 (dateSlots에서 역참조)
+    const myDates = Object.entries(appState.dateSlots)
+      .filter(([,names]) => names.includes(name))
+      .map(([d]) => d)
+      .sort();
 
-    let badge = '';
-    if (isCurrentTurn) badge = '<span class="badge badge-current">선택 중</span>';
-    else if (queuePos === 1) badge = '<span class="badge badge-next">다음</span>';
-    else badge = `<span class="badge badge-wait">${queuePos}번 후</span>`;
+    const myPending = pendingDate[name];
 
-    let dateDisplay = '';
-    if (myConfirmedDate) {
-      dateDisplay = `<span class="order-confirmed-date">${myConfirmedDate}</span>`;
-    } else if (myPendingDate && isCurrentTurn) {
-      dateDisplay = `<span class="order-date">${myPendingDate}</span>`;
+    let datesHtml = '';
+    if (myDates.length || myPending) {
+      datesHtml = '<div class="order-dates">';
+      myDates.forEach(d => { datesHtml += `<span>${formatDate(d)}</span>`; });
+      if (myPending) datesHtml += `<span class="pending">${formatDate(myPending)} 선택중</span>`;
+      datesHtml += '</div>';
     }
 
+    let badge = '';
+    if (isCurrent) badge = '<span class="badge badge-current">선택 중</span>';
+    else if (qPos === 1) badge = '<span class="badge badge-next">다음</span>';
+    else badge = `<span class="badge badge-wait">${qPos}번 후</span>`;
+
     item.innerHTML = `
-      <span class="order-num">${participants.indexOf(name) + 1}</span>
+      <span class="order-num">${participants.indexOf(name)+1}</span>
       <span class="order-name">${name}</span>
-      ${dateDisplay}
+      ${datesHtml}
       ${badge}
     `;
 
-    // 내 차례이고 내가 현재 턴인 경우 완료 버튼
-    if (isCurrentTurn && myName === name) {
+    if (isCurrent && myName === name) {
       const btn = document.createElement('button');
       btn.className = 'complete-btn';
       btn.textContent = '선택 완료 →';
-      btn.disabled = !myPendingDate;
+      btn.disabled = !myPending;
       btn.onclick = () => confirmSelection();
       item.appendChild(btn);
     }
-
     list.appendChild(item);
   });
-
-  // 이미 이번 라운드에서 확정한 사람들 맨 아래 (스무스하게)
-  // 이번 라운드에서 이미 선택 완료한 사람 = confirmedDates에 있는 사람 중 현재 라운드에서 처리된 사람
-  // 간단히: confirmedDates에 등록된 사람들을 맨 아래 표시
-  if (Object.keys(confirmedDates).length > 0) {
-    const divider = document.createElement('div');
-    divider.style.cssText = 'font-size:11px;color:#aeaeb2;padding:8px 4px 4px;';
-    divider.textContent = '— 선택 완료 —';
-    list.appendChild(divider);
-
-    Object.entries(confirmedDates).forEach(([name, date]) => {
-      const item = document.createElement('div');
-      item.className = 'order-item done';
-      item.innerHTML = `
-        <span class="order-num">${participants.indexOf(name) + 1}</span>
-        <span class="order-name">${name}</span>
-        <span class="order-confirmed-date">${date}</span>
-        <span class="badge badge-confirmed">확정</span>
-      `;
-      list.appendChild(item);
-    });
-  }
 }
 
-// 달력 렌더링
+function formatDate(dateStr) {
+  const [,m,d] = dateStr.split('-');
+  return `${parseInt(m)}/${parseInt(d)}`;
+}
+
+// ── 날짜 선택 확정 ──
+function confirmSelection() {
+  const pending = appState.pendingDate[myName];
+  if (!pending) return;
+
+  // dateSlots에 추가
+  if (!appState.dateSlots[pending]) appState.dateSlots[pending] = [];
+  if (!appState.dateSlots[pending].includes(myName)) {
+    appState.dateSlots[pending].push(myName);
+  }
+  // pending 제거
+  delete appState.pendingDate[myName];
+  // confirmedDates (이번 라운드 추적용 — 맨 아래 이동에는 안 쓰고 currentIndex로 처리)
+  appState.currentIndex += 1;
+  save();
+}
+
+// ── 달력 ──
 function renderCalendar() {
   const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
   document.getElementById('cal-title').textContent = `2026년 ${months[calMonth]}`;
@@ -447,119 +463,109 @@ function renderCalendar() {
   grid.innerHTML = '';
 
   const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
   const daysInPrev = new Date(calYear, calMonth, 0).getDate();
-  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
-  const { confirmedDates, pendingDate } = appState;
-
-  // 확정된 날짜 역방향 맵 {dateStr: name}
-  const confirmedDateMap = {};
-  Object.entries(confirmedDates).forEach(([name, date]) => {
-    confirmedDateMap[date] = name;
-  });
-
-  // 내 펜딩 날짜
+  const { dateSlots, pendingDate } = appState;
   const myPending = pendingDate[myName] || null;
+  const myTurn = isMyTurn();
 
-  // 이전 달 빈칸
+  // 이전달 빈칸
   for (let i = 0; i < firstDay; i++) {
     const cell = document.createElement('div');
     cell.className = 'cal-cell other-month';
     const d = daysInPrev - firstDay + i + 1;
-    cell.innerHTML = `<div class="cal-inner"><span class="cal-num">${d}</span></div>`;
+    cell.innerHTML = `<div class="cal-num">${d}</div>`;
     grid.appendChild(cell);
   }
 
-  // 이번 달
   for (let d = 1; d <= daysInMonth; d++) {
     const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isHoliday = !!HOLIDAYS[dateStr];
-    const isConfirmed = !!confirmedDateMap[dateStr];
-    const isSelected = myPending === dateStr;
-    const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
-    const isMine = isMyTurn();
+    const isPast = dateStr < todayStr;
+    const isToday = dateStr === todayStr;
+    const slots = dateSlots[dateStr] || [];
+    const slotCount = slots.length;
+    const isFull = slotCount >= MAX_PER_DATE;
+    const isMyPending = myPending === dateStr;
+    const hasConfirmed = slotCount > 0;
 
     const cell = document.createElement('div');
-    let classes = 'cal-cell';
-    if (isHoliday && !isConfirmed) classes += ' holiday selectable';
-    if (isHoliday && isConfirmed) classes += ' holiday confirmed';
-    if (isSelected) classes += ' selected';
-    if (isToday) classes += ' today';
-
-    cell.className = classes;
-
-    let inner = `<div class="cal-inner"><span class="cal-num">${d}</span>`;
-    if (isConfirmed) {
-      inner += `<span class="confirmed-name">${confirmedDateMap[dateStr]}</span>`;
+    let cls = 'cal-cell';
+    if (isPast) cls += ' past';
+    if (isHoliday && !isPast) {
+      cls += ' holiday';
+      if (isFull) cls += ' full';
+      else if (hasConfirmed) cls += ' has-confirmed';
+      if (isMyPending) cls += ' my-pending';
+      if (!isFull && myTurn && !isPast) cls += ' selectable';
     }
-    if (isHoliday) {
-      inner += `<span class="holiday-name">${HOLIDAYS[dateStr]}</span>`;
+    if (isToday) cls += ' today';
+    cell.className = cls;
+
+    let inner = `<div class="cal-num">${d}</div>`;
+    if (isToday) inner += `<div class="today-dot"></div>`;
+
+    // 확정 이름 태그들
+    if (hasConfirmed || isMyPending) {
+      inner += '<div class="cal-names">';
+      slots.forEach(n => { inner += `<div class="cal-name-tag">${n}</div>`; });
+      if (isMyPending && !slots.includes(myName)) inner += `<div class="cal-name-tag pending-tag">${myName}</div>`;
+      inner += '</div>';
     }
-    inner += '</div>';
+
+    // 남은 자리 표시 (공휴일이고 지난날 아닐 때)
+    if (isHoliday && !isPast) {
+      const remain = MAX_PER_DATE - slotCount;
+      if (!isFull) {
+        const cls2 = remain === MAX_PER_DATE ? 'ok' : remain === 1 ? 'warn' : '';
+        inner += `<div class="cal-slots ${cls2}">${remain}자리</div>`;
+      } else {
+        inner += `<div class="cal-slots" style="color:#aeaeb2">마감</div>`;
+      }
+    }
+
     cell.innerHTML = inner;
 
-    // 클릭 이벤트: 내 차례이고 공휴일이고 미확정인 경우만
-    if (isHoliday && !isConfirmed && isMine) {
+    if (isHoliday && !isPast && !isFull && myTurn) {
       cell.onclick = () => selectDate(dateStr);
-    } else if (isHoliday && !isConfirmed && !isMine) {
-      cell.onclick = null;
     }
 
     grid.appendChild(cell);
   }
 
-  // 다음 달 빈칸
-  const totalCells = firstDay + daysInMonth;
-  const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
-  for (let i = 1; i <= remaining; i++) {
+  // 다음달 빈칸
+  const total = firstDay + daysInMonth;
+  const remain = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let i = 1; i <= remain; i++) {
     const cell = document.createElement('div');
     cell.className = 'cal-cell other-month';
-    cell.innerHTML = `<div class="cal-inner"><span class="cal-num">${i}</span></div>`;
+    cell.innerHTML = `<div class="cal-num">${i}</div>`;
     grid.appendChild(cell);
   }
 
-  // 하단 바
-  const selBar = document.getElementById('cal-selection-bar');
+  // 하단 안내
+  const infoBar = document.getElementById('cal-info-bar');
   const notYourTurn = document.getElementById('not-your-turn');
-  const selInfo = document.getElementById('cal-selection-info');
-
-  if (isMyTurn()) {
+  if (myTurn) {
     notYourTurn.style.display = 'none';
-    selBar.style.display = 'flex';
-    if (myPending) {
-      selInfo.innerHTML = `선택한 날짜: <strong>${myPending}</strong> — 선택순서 탭에서 확정하세요`;
-    } else {
-      selInfo.innerHTML = `빨간 테두리 날짜를 선택하세요`;
-    }
+    infoBar.style.display = 'block';
+    infoBar.innerHTML = myPending
+      ? `선택한 날짜: <strong>${myPending}</strong> — 선택순서 탭에서 확정하세요`
+      : `빨간 테두리 날짜를 선택하세요 (1인당 매 라운드 1개)`;
   } else {
-    selBar.style.display = 'none';
-    if (myName) {
-      notYourTurn.style.display = 'block';
-    }
+    infoBar.style.display = 'none';
+    notYourTurn.style.display = myName ? 'block' : 'none';
   }
 }
 
 function selectDate(dateStr) {
   if (!isMyTurn()) return;
   // 토글
-  if (appState.pendingDate[myName] === dateStr) {
-    delete appState.pendingDate[myName];
-  } else {
-    appState.pendingDate[myName] = dateStr;
-  }
-  saveState();
-}
-
-function confirmSelection() {
-  const pending = appState.pendingDate[myName];
-  if (!pending) { alert('vacation file 탭에서 날짜를 먼저 선택해주세요.'); return; }
-
-  // 확정
-  appState.confirmedDates[myName] = pending;
-  delete appState.pendingDate[myName];
-  appState.currentIndex += 1;
-  saveState();
+  appState.pendingDate[myName] = appState.pendingDate[myName] === dateStr ? null : dateStr;
+  if (!appState.pendingDate[myName]) delete appState.pendingDate[myName];
+  save();
 }
 
 window.changeMonth = function(dir) {
@@ -569,69 +575,117 @@ window.changeMonth = function(dir) {
   renderCalendar();
 };
 
-// 관리자 모달
-window.openModal = function() {
-  document.getElementById('modal-backdrop').classList.add('open');
-  document.getElementById('step-pw').style.display = 'block';
-  document.getElementById('step-setup').style.display = 'none';
-  document.getElementById('pw-input').value = '';
-  document.getElementById('pw-error').style.display = 'none';
-  setTimeout(() => document.getElementById('pw-input').focus(), 50);
-};
-window.closeModal = function() { document.getElementById('modal-backdrop').classList.remove('open'); };
-window.handleBackdropClick = function(e) { if (e.target === document.getElementById('modal-backdrop')) window.closeModal(); };
+// ── 모달 공통 ──
+window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+function openModal(id) { document.getElementById(id).classList.add('open'); }
 
-window.checkPw = function() {
-  if (document.getElementById('pw-input').value === PW) {
-    document.getElementById('step-pw').style.display = 'none';
-    document.getElementById('step-setup').style.display = 'block';
-    const sel = document.getElementById('count-select');
-    sel.innerHTML = '<option value="">선택하세요</option>';
-    for (let i = 2; i <= 40; i++) sel.innerHTML += `<option value="${i}">${i}명</option>`;
-    if (appState.participants.length > 0) {
-      sel.value = appState.participants.length;
-      window.renderNameInputs(appState.participants);
-    } else { window.renderNameInputs(); }
-  } else {
-    document.getElementById('pw-error').style.display = 'block';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
+// ── 순서 관리 모달 ──
+window.openAdminModal = function() {
+  openModal('admin-modal');
+  document.getElementById('admin-pw-step').style.display = 'block';
+  document.getElementById('admin-setup-step').style.display = 'none';
+  document.getElementById('admin-pw-input').value = '';
+  document.getElementById('admin-pw-error').style.display = 'none';
+  setTimeout(() => document.getElementById('admin-pw-input').focus(), 50);
+};
+window.checkAdminPw = function() {
+  if (document.getElementById('admin-pw-input').value !== PW_ADMIN) {
+    document.getElementById('admin-pw-error').style.display = 'block';
+    document.getElementById('admin-pw-input').value = '';
+    return;
+  }
+  document.getElementById('admin-pw-step').style.display = 'none';
+  document.getElementById('admin-setup-step').style.display = 'block';
+  const sel = document.getElementById('admin-count-select');
+  sel.innerHTML = '<option value="">선택하세요</option>';
+  for (let i = 2; i <= 40; i++) sel.innerHTML += `<option value="${i}">${i}명</option>`;
+  if (appState.participants.length) {
+    sel.value = appState.participants.length;
+    renderAdminNameInputs(appState.participants);
   }
 };
-
-window.renderNameInputs = function(existing) {
-  const count = parseInt(document.getElementById('count-select').value) || 0;
-  const container = document.getElementById('name-inputs');
-  container.innerHTML = '';
+window.renderAdminNameInputs = function(existing) {
+  const count = parseInt(document.getElementById('admin-count-select').value) || 0;
+  const c = document.getElementById('admin-name-inputs');
+  c.innerHTML = '';
   for (let i = 0; i < count; i++) {
-    const row = document.createElement('div');
-    row.className = 'name-row';
+    const row = document.createElement('div'); row.className = 'name-row';
     const val = existing && existing[i] ? existing[i] : '';
     row.innerHTML = `<span>${i+1}</span><input type="text" placeholder="${i+1}번째 선택자" value="${val}">`;
-    container.appendChild(row);
+    c.appendChild(row);
   }
 };
-
-window.saveOrder = function() {
-  const names = Array.from(document.querySelectorAll('#name-inputs input')).map(i => i.value.trim()).filter(Boolean);
+window.saveAdminOrder = function() {
+  const names = Array.from(document.querySelectorAll('#admin-name-inputs input')).map(i=>i.value.trim()).filter(Boolean);
   if (names.length < 2) { alert('최소 2명 이상 입력해주세요.'); return; }
   appState.participants = names;
   appState.currentIndex = 0;
-  appState.selectedDates = {};
   appState.confirmedDates = {};
   appState.pendingDate = {};
-  saveState();
-  window.closeModal();
+  appState.dateSlots = {};
+  save();
+  window.closeModal('admin-modal');
 };
 
-window.confirmReset = function() {
-  if (confirm('처음부터 다시 시작할까요?')) {
-    appState.currentIndex = 0;
-    appState.selectedDates = {};
-    appState.confirmedDates = {};
-    appState.pendingDate = {};
-    saveState();
+// ── 신입 추가 모달 ──
+window.openNewbieModal = function() {
+  openModal('newbie-modal');
+  document.getElementById('newbie-pw-step').style.display = 'block';
+  document.getElementById('newbie-setup-step').style.display = 'none';
+  document.getElementById('newbie-pw-input').value = '';
+  document.getElementById('newbie-pw-error').style.display = 'none';
+  setTimeout(() => document.getElementById('newbie-pw-input').focus(), 50);
+};
+window.checkNewbiePw = function() {
+  if (document.getElementById('newbie-pw-input').value !== PW_ADMIN) {
+    document.getElementById('newbie-pw-error').style.display = 'block';
+    document.getElementById('newbie-pw-input').value = '';
+    return;
   }
+  document.getElementById('newbie-pw-step').style.display = 'none';
+  document.getElementById('newbie-setup-step').style.display = 'block';
+  const sel = document.getElementById('newbie-count-select');
+  sel.innerHTML = '<option value="">선택하세요</option>';
+  for (let i = 1; i <= 10; i++) sel.innerHTML += `<option value="${i}">${i}명</option>`;
+};
+window.renderNewbieNameInputs = function() {
+  const count = parseInt(document.getElementById('newbie-count-select').value) || 0;
+  const c = document.getElementById('newbie-name-inputs');
+  const base = appState.participants.length;
+  c.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const row = document.createElement('div'); row.className = 'name-row';
+    row.innerHTML = `<span>${base+i+1}</span><input type="text" placeholder="${base+i+1}번째 선택자">`;
+    c.appendChild(row);
+  }
+};
+window.saveNewbies = function() {
+  const names = Array.from(document.querySelectorAll('#newbie-name-inputs input')).map(i=>i.value.trim()).filter(Boolean);
+  if (!names.length) { alert('이름을 입력해주세요.'); return; }
+  appState.participants = [...appState.participants, ...names];
+  save();
+  window.closeModal('newbie-modal');
+};
+
+// ── 다시 시작 모달 ──
+window.openResetModal = function() {
+  openModal('reset-modal');
+  document.getElementById('reset-pw-input').value = '';
+  document.getElementById('reset-pw-error').style.display = 'none';
+  setTimeout(() => document.getElementById('reset-pw-input').focus(), 50);
+};
+window.checkResetPw = function() {
+  if (document.getElementById('reset-pw-input').value !== PW_RESET) {
+    document.getElementById('reset-pw-error').style.display = 'block';
+    document.getElementById('reset-pw-input').value = '';
+    return;
+  }
+  appState.currentIndex = 0;
+  appState.confirmedDates = {};
+  appState.pendingDate = {};
+  appState.dateSlots = {};
+  save();
+  window.closeModal('reset-modal');
 };
 </script>
 </body>
